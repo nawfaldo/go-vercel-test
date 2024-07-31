@@ -33,7 +33,8 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := session.Get(r, "kukis")
 	cookie.Options = &sessions.Options{
 		MaxAge:   3600 * 24, // 1 day
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
 	}
 
 	cookie.Values["user"] = user.ID
@@ -63,7 +64,8 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := session.Get(r, "kukis")
 	cookie.Options = &sessions.Options{
 		MaxAge:   3600 * 24, // 1 day
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
 	}
 
 	cookie.Values["user"] = userId
@@ -97,7 +99,8 @@ func handleLogout(w http.ResponseWriter, r *http.Request) {
 	cookie.Values["user"] = nil
 	cookie.Options = &sessions.Options{
 		MaxAge:   -1,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
 	}
 
 	if err := cookie.Save(r, w); err != nil {
