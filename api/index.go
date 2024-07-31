@@ -15,7 +15,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 func Main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", hello).Methods("GET")
+	router.HandleFunc("/hello", hello).Methods("GET")
 
 	http.ListenAndServe(":8080", router)
 }
