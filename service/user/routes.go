@@ -2,23 +2,12 @@ package user
 
 import (
 	"net/http"
-	"vercer/types"
 	"vercer/utils"
 
 	"github.com/gorilla/mux"
 )
 
-type Handler struct {
-	store types.UserStore
-}
-
-func NewHandler(store types.UserStore) *Handler {
-	return &Handler{
-		store: store,
-	}
-}
-
-func (h *Handler) RegisterRoutes(router *mux.Router) {
+func RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/users", handleGetUsers).Methods("GET")
 	router.HandleFunc("/user", handleCreateUsers).Methods("POST")
 }

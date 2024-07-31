@@ -1,7 +1,6 @@
 package api
 
 import (
-	"database/sql"
 	"net/http"
 	"vercer/service/user"
 
@@ -14,26 +13,12 @@ var (
 	router *mux.Router
 )
 
-type Server struct {
-	addr string
-	db   *sql.DB
-}
-
-func NewServer(addr string, db *sql.DB) *Server {
-	return &Server{
-		addr: addr,
-		db:   db,
-	}
-}
-
-func (s *Server) init() {
+func init() {
 	router = mux.NewRouter()
 
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 
-	userStore := user.NewStore(s.db)
-	userHandler := user.NewHandler(userStore)
-	userHandler.RegisterRoutes(v1)
+	user.RegisterRoutes(v1)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
