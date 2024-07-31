@@ -2,7 +2,13 @@ package user
 
 import "database/sql"
 
-func GetUsers(database *sql.DB) any {
+var db *sql.DB
+
+func RegisterStore(database *sql.DB) {
+	db = database
+}
+
+func GetUsers() any {
 	rows, _ := db.Query("SELECT name FROM users")
 	defer rows.Close()
 

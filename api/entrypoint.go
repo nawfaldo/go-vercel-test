@@ -25,7 +25,8 @@ func init() {
 
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 
-	user.RegisterRoutes(v1, db)
+	user.RegisterRoutes(v1)
+	user.RegisterStore(db)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
