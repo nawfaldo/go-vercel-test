@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	_ "github.com/lib/pq"
-	"github.com/rs/cors"
 )
 
 var (
@@ -31,18 +30,25 @@ func init() {
 
 	user.RegisterRoutes(v1, session)
 	user.RegisterStore(db)
+}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Content-Type", "Access-Control-Allow-Origin"},
-		AllowCredentials: true,
+func cors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "https://go-react-api-web.vercel.app")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
 	})
-
-	handler := c.Handler(router)
-	http.Handle("/api/v1/auth", handler)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	router.ServeHTTP(w, r)
+	corsHandler := cors(router)
+
+	corsHandler.ServeHTTP(w, r)
 }
