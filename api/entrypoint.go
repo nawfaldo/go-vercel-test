@@ -1,15 +1,18 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 	"vercer/utils"
 
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"github.com/rs/cors"
 )
 
 var (
 	router *mux.Router
+	db     *sql.DB
 )
 
 func init() {
@@ -17,7 +20,7 @@ func init() {
 
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 
-	v1.HandleFunc("/hello", hello).Methods("GET")
+	v1.HandleFunc("/users", handleGetUsers).Methods("GET")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
@@ -28,17 +31,31 @@ func init() {
 
 	handler := c.Handler(router)
 	http.Handle("/", handler)
+
+	db, _ = sql.Open("postgres", "postgres://default:Ut4uNix0wdRk@ep-polished-sea-a1efivnq.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require")
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func handleGetUsers(w http.ResponseWriter, r *http.Request) {
+	rows, _ := db.Query("SELECT name FROM users")
+	defer rows.Close()
 
-	hello := map[string]string{
-		"msg": "hello",
+	type User struct {
+		Name string `json:"name"`
 	}
 
-	utils.WriteJSON(w, http.StatusAccepted, hello)
+	var users []User
+
+	for rows.Next() {
+		var u User
+
+		rows.Scan(&u.Name)
+
+		users = append(users, u)
+	}
+
+	utils.WriteJSON(w, http.StatusAccepted, users)
 }
