@@ -20,6 +20,7 @@ func RegisterRoutes(router *mux.Router, store *sessions.CookieStore) {
 	router.HandleFunc("/register", handleRegister).Methods("POST")
 	router.HandleFunc("/auth", handleAuth).Methods("GET")
 	router.HandleFunc("/logout", handleLogout).Methods("POST")
+	router.HandleFunc("/chats", handleChats).Methods("GET")
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
@@ -47,6 +48,10 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Cookie set: %+v\n", cookie)
 
 	utils.WriteJSON(w, http.StatusAccepted, nil)
+}
+
+func handleChats(w http.ResponseWriter, r *http.Request) {
+	utils.WriteJSON(w, http.StatusAccepted, "hallo")
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
