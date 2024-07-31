@@ -2,29 +2,23 @@ package api
 
 import (
 	"net/http"
-	"vercer/utils"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
 var (
-	router *mux.Router
+	app *gin.Engine
 )
 
 func init() {
-	router := mux.NewRouter()
+	app = gin.New()
+	r := app.Group("/api")
 
-	router.HandleFunc("/hello", hello).Methods("GET")
-}
-
-func hello(w http.ResponseWriter, r *http.Request) {
-	hello := map[string]string{
-		"msg": "hello",
-	}
-
-	utils.WriteJSON(w, http.StatusAccepted, hello)
+	r.GET("/hello", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "Hello")
+	})
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	router.ServeHTTP(w, r)
+	app.ServeHTTP(w, r)
 }
