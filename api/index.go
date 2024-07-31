@@ -10,7 +10,7 @@ import (
 func API(w http.ResponseWriter, r *http.Request) {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", hello).Methods("GET")
+	router.HandleFunc("/hello", hello).Methods("GET")
 
 	router.ServeHTTP(w, r)
 }
