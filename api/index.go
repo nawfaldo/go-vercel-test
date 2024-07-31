@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"vercer/utils"
 
@@ -8,9 +9,15 @@ import (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>hello</h1>")
+}
+
+func Main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", hello).Methods("GET")
+
+	http.ListenAndServe(":8080", router)
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
