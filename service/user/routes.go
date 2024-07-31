@@ -18,22 +18,7 @@ func RegisterRoutes(router *mux.Router, database *sql.DB) {
 }
 
 func handleGetUsers(w http.ResponseWriter, r *http.Request) {
-	rows, _ := db.Query("SELECT name FROM users")
-	defer rows.Close()
-
-	type User struct {
-		Name string `json:"name"`
-	}
-
-	var users []User
-
-	for rows.Next() {
-		var u User
-
-		rows.Scan(&u.Name)
-
-		users = append(users, u)
-	}
+	users := GetUsers(db)
 
 	utils.WriteJSON(w, http.StatusAccepted, users)
 }
