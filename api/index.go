@@ -1,20 +1,25 @@
-package handler
+package api
 
 import (
-	"fmt"
 	"net/http"
+	"vercer/utils"
 
 	"github.com/gorilla/mux"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>hello</h1>")
-}
-
-func Main() {
+func API(w http.ResponseWriter, r *http.Request) {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", Handler).Methods("GET")
+	router.HandleFunc("/", hello).Methods("GET")
 
-	http.ListenAndServe(":8080", router)
+	router.ServeHTTP(w, r)
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+
+	hello := map[string]string{
+		"msg": "hello",
+	}
+
+	utils.WriteJSON(w, http.StatusAccepted, hello)
 }
