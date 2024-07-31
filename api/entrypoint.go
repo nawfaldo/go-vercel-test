@@ -33,10 +33,17 @@ func init() {
 	user.RegisterStore(db)
 
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders:   []string{"Content-Type"},
+		AllowedOrigins: []string{"https://go-react-api-web.vercel.app"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{
+			"Content-Type",
+			"Authorization",
+			"X-Requested-With",
+			"Accept",
+			"Origin",
+		},
 		AllowCredentials: true,
+		MaxAge:           300,
 	})
 
 	handler := c.Handler(router)
