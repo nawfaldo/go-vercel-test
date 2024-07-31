@@ -12,9 +12,8 @@ var (
 
 func init() {
 	router = mux.NewRouter()
-	apiRouter := router.PathPrefix("/api").Subrouter()
 
-	apiRouter.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Hello"))
 	})
