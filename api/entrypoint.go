@@ -27,8 +27,6 @@ func NewServer(addr string, db *sql.DB) *Server {
 }
 
 func (s *Server) init() {
-	s.db, _ = sql.Open("postgres", "postgres://default:Ut4uNix0wdRk@ep-polished-sea-a1efivnq.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require")
-
 	router = mux.NewRouter()
 
 	v1 := router.PathPrefix("/api/v1").Subrouter()
