@@ -5,6 +5,7 @@ import (
 	"vercer/utils"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 var (
@@ -17,6 +18,16 @@ func init() {
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 
 	v1.HandleFunc("/hello", hello).Methods("GET")
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(router)
+	http.Handle("/", handler)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
