@@ -16,10 +16,10 @@ var session *sessions.CookieStore
 func RegisterRoutes(router *mux.Router, store *sessions.CookieStore) {
 	session = store
 
-	router.HandleFunc("/login", utils.Cors(handleLogin)).Methods("POST")
-	router.HandleFunc("/register", utils.Cors(handleRegister)).Methods("POST")
-	router.HandleFunc("/auth", utils.Cors(handleAuth)).Methods("GET")
-	router.HandleFunc("/logout", utils.Cors(handleLogout)).Methods("POST")
+	router.HandleFunc("/login", handleLogin).Methods("POST")
+	router.HandleFunc("/register", handleRegister).Methods("POST")
+	router.HandleFunc("/auth", handleAuth).Methods("GET")
+	router.HandleFunc("/logout", handleLogout).Methods("POST")
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
