@@ -101,23 +101,23 @@ func handleAuth(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleLogout(w http.ResponseWriter, r *http.Request) {
-	cookie, err := session.Get(r, "kukis")
-	if err != nil {
-		utils.WriteError(w, http.StatusInternalServerError, err)
-		return
-	}
+	// cookie, err := session.Get(r, "kukis")
+	// if err != nil {
+	// 	utils.WriteError(w, http.StatusInternalServerError, err)
+	// 	return
+	// }
 
-	cookie.Values["user"] = nil
-	cookie.Options = &sessions.Options{
-		MaxAge:   -1,
-		SameSite: http.SameSiteLaxMode,
-		Secure:   true,
-	}
+	// cookie.Values["user"] = nil
+	// cookie.Options = &sessions.Options{
+	// 	MaxAge:   -1,
+	// 	SameSite: http.SameSiteLaxMode,
+	// 	Secure:   true,
+	// }
 
-	if err := cookie.Save(r, w); err != nil {
-		utils.WriteError(w, http.StatusInternalServerError, err)
-		return
-	}
+	// if err := cookie.Save(r, w); err != nil {
+	// 	utils.WriteError(w, http.StatusInternalServerError, err)
+	// 	return
+	// }
 
 	utils.WriteJSON(w, http.StatusOK, nil)
 }
