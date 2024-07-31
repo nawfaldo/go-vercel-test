@@ -38,7 +38,13 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cookie.Values["user"] = user.ID
-	cookie.Save(r, w)
+	if err := cookie.Save(r, w); err != nil {
+		utils.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	// Log cookie details for debugging
+	fmt.Printf("Cookie set: %+v\n", cookie)
 
 	utils.WriteJSON(w, http.StatusAccepted, nil)
 }
