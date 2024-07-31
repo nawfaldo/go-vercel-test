@@ -40,7 +40,7 @@ func init() {
 	})
 
 	handler := c.Handler(router)
-	http.Handle("/api/v1/auth/login", handler)
+	http.Handle("/api/v1/auth", handler)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
