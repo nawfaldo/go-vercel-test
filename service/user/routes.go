@@ -18,11 +18,7 @@ func RegisterRoutes(router *mux.Router, database *sql.DB) {
 }
 
 func handleGetUsers(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("SELECT name FROM users")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	rows, _ := db.Query("SELECT name FROM users")
 	defer rows.Close()
 
 	type User struct {
@@ -33,10 +29,9 @@ func handleGetUsers(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		var u User
-		if err := rows.Scan(&u.Name); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+
+		rows.Scan(&u.Name)
+
 		users = append(users, u)
 	}
 
