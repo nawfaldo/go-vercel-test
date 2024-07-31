@@ -3,22 +3,23 @@ package api
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 )
 
 var (
-	app *gin.Engine
+	router *mux.Router
 )
 
 func init() {
-	app = gin.New()
-	r := app.Group("/api")
+	router = mux.NewRouter()
+	apiRouter := router.PathPrefix("/api").Subrouter()
 
-	r.GET("/hello", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "Hello")
+	apiRouter.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Hello"))
 	})
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	app.ServeHTTP(w, r)
+	router.ServeHTTP(w, r)
 }
