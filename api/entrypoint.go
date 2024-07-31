@@ -35,7 +35,7 @@ func init() {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Content-Type"},
+		AllowedHeaders:   []string{"Content-Type", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
 	})
 
