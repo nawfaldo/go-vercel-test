@@ -3,7 +3,7 @@ package api
 import (
 	"database/sql"
 	"net/http"
-	"vercer/utils"
+	"vercer/service/user"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -20,7 +20,7 @@ func init() {
 
 	v1 := router.PathPrefix("/api/v1").Subrouter()
 
-	v1.HandleFunc("/users", handleGetUsers).Methods("GET")
+	user.RegisterRoutes(v1, db)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://go-react-api-web.vercel.app"},
@@ -37,25 +37,4 @@ func init() {
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
-}
-
-func handleGetUsers(w http.ResponseWriter, r *http.Request) {
-	rows, _ := db.Query("SELECT name FROM users")
-	defer rows.Close()
-
-	type User struct {
-		Name string `json:"name"`
-	}
-
-	var users []User
-
-	for rows.Next() {
-		var u User
-
-		rows.Scan(&u.Name)
-
-		users = append(users, u)
-	}
-
-	utils.WriteJSON(w, http.StatusAccepted, users)
 }
